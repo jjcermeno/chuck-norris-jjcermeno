@@ -23,5 +23,9 @@ docker-down:
 
 bi: # bundle install, not needed, use docker-build, however it will build everything
 	cd cn_api && docker-compose run cn_api bundle install
-db_c:
+db-c:
 	docker-compose run cn_api rails db:create
+rspec-i:
+	docker-compose run cn_api rails generate rspec:install
+tests:
+	docker-compose run cn_api rails spec

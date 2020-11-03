@@ -29,7 +29,6 @@ gem 'faraday'
 gem 'oj'
 gem 'json'
 gem 'sinatra'
-gem 'rspec'
 
 
 group :development, :test do
