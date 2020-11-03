@@ -45,13 +45,13 @@ services:
       - db
       - redis
 
-#  cn_front:
-#    build: ./cn_front
-#    ports:
-#      - "8091:8080" # use port that you want to in your local instead of 8091
-#    volumes:
-#      - ./cn_front:/cn_front
-#      - front_node_modules:/cn_front/node_modules
+  cn_front:
+    build: ./cn_front
+    ports:
+      - "8091:8080" # use port that you want to in your local instead of 8091
+    volumes:
+      - ./cn_front:/cn_front
+      - front_node_modules:/cn_front/node_modules
 
 volumes:
   db:
