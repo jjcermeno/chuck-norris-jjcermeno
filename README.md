@@ -66,8 +66,6 @@ I think that one of the best ways to use Rails is using use-case oriented Rails.
 - category_name
 - jokes (will point to model `Joke`)
 
-Because we are using Rails and Active Record is heavily used in Rails, we are going to use `has_many through:` because we have some relations between the models. So we have to build the join table between `Joke-Search` and `Joke-Category`.
-
 ## Use Cases
 
 ### Getting CN Fact Categories
@@ -112,6 +110,18 @@ Versions I use are:
 
 I created a `Makefile` that contains the most frequent command I use to setup and run everything.
 
-Folder for back end based in Ruby on Rails: api mode, postgres, sidekiq and redis
+After creating conveniently the `docker-compose` file we can start creating a folder for back and other for front. Those are called `cn_api` for back end and `cn_front` for, yes, front end.
 
-Folder for front end based in Vue.js
+Back end based in Ruby on Rails: api mode, postgres, sidekiq and redis
+
+Folder for front end based in Vue.js and axios for sending REST API requests to back end.
+
+## Back end: Models
+
+I created models following, more and less, the fields when studying the problem. However, because we are using Rails and Active Record is heavily used in Rails, we are going to use `has_many through:` because we have some relations between the models. So we have to build the join table between `Joke-Search` and `Joke-Category` and surprisingly that join table is called `JokeCategory` and `JokeSearch`.
+
+Once we have created the models using command `rails g model`, it creates tests too. So, we are getting ride of `JokeCategory` and `JokeSearch` tests but not for the rest of models. We have to create factories too but they are easy. Those model specs try to test against relations and validations. Yes, I know, validations could be done in other layers of the architecture, but right now, I do not know if I am going to use so much abstraction, and if I finally use it, I can go to model and remove such validations and write tests against the proper logic.
+
+## Back end: Requests
+
+I am going to create request tests because those tests everything: routing, logic, responses, validation of incoming data, everything. However, I will probably write some unit test for specific pieces like the external API wrapper with mocked data.
