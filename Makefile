@@ -71,5 +71,7 @@ add-migration:
 add-model:
 	docker-compose run cn_api bundle exec rails g model $(RUN_ARGS)
 
+rails-routes:
+	docker-compose run cn_api bundle exec rails routes
 
 # VUEJS
