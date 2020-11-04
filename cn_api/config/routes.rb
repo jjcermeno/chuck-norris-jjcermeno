@@ -9,5 +9,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get "show_404", controller: :routing_errors, action: :show_404
+
   match '*path', to: 'routing_errors#show_404', via: :all
 end

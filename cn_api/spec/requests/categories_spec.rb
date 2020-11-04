@@ -12,7 +12,6 @@ RSpec.describe 'Categories API', type: :request do
 
     it 'returns categories' do
       # Note `json` is a custom helper to parse JSON responses
-      puts json
       expect(json).not_to be_empty
       expect(json.size).to eq(10)
     end
