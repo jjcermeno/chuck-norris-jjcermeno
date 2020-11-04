@@ -49,20 +49,21 @@ I think that one of the best ways to use Rails is using use-case oriented Rails.
 - created_at
 - updated_at
 - icon_url
-- url
-- value
+- joke_url
+- joke_value
 
 **`Search`**
 
 - id
-- type (string that could be word, category, random)
-- value
+- search_type (string that could be word, category, random)
+- search_value
+- email
 - jokes (will point to model `Joke`)
 
 **`Category`**
 
 - id
-- name
+- category_name
 - jokes (will point to model `Joke`)
 
 Because we are using Rails and Active Record is heavily used in Rails, we are going to use `has_many through:` because we have some relations between the models. So we have to build the join table between `Joke-Search` and `Joke-Category`.

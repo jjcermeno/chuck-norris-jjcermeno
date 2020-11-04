@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_04_131403) do
+ActiveRecord::Schema.define(version: 2020_11_04_131404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "categories", force: :cascade do |t|
-    t.string "name"
+    t.string "category_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -41,16 +41,17 @@ ActiveRecord::Schema.define(version: 2020_11_04_131403) do
 
   create_table "jokes", force: :cascade do |t|
     t.string "ext_id"
-    t.text "value"
-    t.string "url"
+    t.text "joke_value"
+    t.string "joke_url"
     t.string "icon_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "searches", force: :cascade do |t|
-    t.string "type"
-    t.string "value"
+    t.string "search_type"
+    t.string "search_value"
+    t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
