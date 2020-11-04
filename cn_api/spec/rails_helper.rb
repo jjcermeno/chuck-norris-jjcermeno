@@ -7,6 +7,20 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
+# require database cleaner at the top level
+require 'database_cleaner'
+
+# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+# Dir[Rails.root.join('spec', 'factories', '**', '*.rb')].each { |f| require f }
+
+# configure shoulda matchers to use rspec as the test framework and full matcher libraries for rails
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -61,23 +75,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-end
 
-# require database cleaner at the top level
-require 'database_cleaner'
-
-# [...]
-# configure shoulda matchers to use rspec as the test framework and full matcher libraries for rails
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
-  end
-end
-
-# [...]
-RSpec.configure do |config|
-  # [...]
   # add `FactoryBot` methods
   config.include FactoryBot::Syntax::Methods
 
@@ -93,5 +91,6 @@ RSpec.configure do |config|
       example.run
     end
   end
-  # [...]
+
 end
+

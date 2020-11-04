@@ -41,6 +41,9 @@ rspec-i:
 tests:
 	docker-compose run cn_api bundle exec rails spec
 
+test:
+	docker-compose run cn_api bundle exec rails spec $(RUN_ARGS)
+
 run-rails-console:
 	docker-compose run cn_api bundle exec rails console
 
