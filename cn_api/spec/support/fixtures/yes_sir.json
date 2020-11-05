@@ -1,9 +1,14 @@
 {
-    "categories": [],
-    "created_at": "2020-01-05 13:42:26.447675",
-    "icon_url": "https://assets.chucknorris.host/img/avatar/chuck-norris.png",
-    "id": "0ECUwLDTTYSaeFCq6YMa5A",
-    "updated_at": "2020-01-05 13:42:26.447675",
-    "url": "https://api.chucknorris.io/jokes/0ECUwLDTTYSaeFCq6YMa5A",
-    "value": "Chuck Norris can walk with the animals, talk with the animals; grunt and squeak and squawk with the animals... and the animals, without fail, always say 'yessir Mr. Norris'."
+    "total": 1,
+    "result": [
+        {
+            "categories": [ ],
+            "created_at": "2020-01-05 13:42:26.447675",
+            "icon_url": "https://assets.chucknorris.host/img/avatar/chuck-norris.png",
+            "id": "0ECUwLDTTYSaeFCq6YMa5A",
+            "updated_at": "2020-01-05 13:42:26.447675",
+            "url": "https://api.chucknorris.io/jokes/0ECUwLDTTYSaeFCq6YMa5A",
+            "value": "Chuck Norris can walk with the animals, talk with the animals; grunt and squeak and squawk with the animals... and the animals, without fail, always say 'yessir Mr. Norris'."
+        }
+    ]
 }

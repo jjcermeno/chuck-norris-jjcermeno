@@ -24,7 +24,7 @@ describe ApiWrappers::ChuckNorrisApi::Client do
     it 'the joke contains yessir' do
       client = ApiWrappers::ChuckNorrisApi::Client.new
       result = client.jokes_by_search_word('yessir')
-      expect(result['value']).to include('yessir')
+      expect(result['result'].first['value']).to include('yessir')
     end
   end
 end
