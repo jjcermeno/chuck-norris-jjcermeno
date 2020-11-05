@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Status API', type: :request do
   # initialize test data
-  # let!(:categories) { create_list(:category, 10) }
-  # let(:category_id) { category.first.id }
+  # let!(:categories) { create_list(:categories, 10) }
+  # let(:category_id) { categories.first.id }
   let(:expected_response) {
       {
       "data": [

@@ -4,9 +4,10 @@ module Api
 
       # GET /categories
       def index
-        data = {}
-        json = Oj.dump(data)
-        render json: json, status: :ok
+        data_result = Manager.fetch_categories
+        status = data_result.errors.present? ? :unprocessable_entity : :ok
+        json = Oj.dump(data_result.as_json)
+        render json: json, status: status
       end
 
     end
