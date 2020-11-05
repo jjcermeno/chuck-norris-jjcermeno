@@ -1,11 +1,11 @@
 require 'caze'
 
-module Status
-  class GetStatus
+module Info
+  class GetInfo
     include Caze
 
     attr_reader :data_result
-    export :call, as: :get_status
+    export :call, as: :get_info
 
     def initialize()
       ;
