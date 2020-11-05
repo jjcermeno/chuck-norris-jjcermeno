@@ -82,7 +82,7 @@ So the workflow is:
 
 ### Create New Search
 
-### Get all searched performed so far (not the results, paginated)
+### Get all searches performed so far (not the results, paginated)
 
 ### Get (specific) Search results, paginated
 
@@ -125,3 +125,25 @@ Once we have created the models using command `rails g model`, it creates tests 
 ## Back end: Requests
 
 I am going to create request tests because those tests everything: routing, logic, responses, validation of incoming data, everything. However, I will probably write some unit test for specific pieces like the external API wrapper with mocked data.
+
+### Status
+
+Status is a small service just returns some info about the service like the service descriptive name, version, total count of jokes, searches and categories in the database.
+
+It comes with tests.
+
+### GET /api/v1/categories
+
+This endpoint returns the categories in the db. The interactor (use case) will connect with external API and it will add any new category not present in the db. This endpoint is usually used when frontend asks for categories to show in a select box or something similar.
+
+Use case is `use_cases/categories/fetch_categories.rb` launched by use cases `manager.rb`
+
+Because we can get Chuck Norris facts from the external API (`chuck_norris_api` client) by searching categories, we need to get them and populate our database, so we can save time, don't need to get categories every time user perform a search by using categories.
+
+So the (initial) workflow is:
+
+- defined endpoint GET /api/v1/categories
+- then, `fetch_categories` use case is called when endpoint is reached (I'm using gem `caze` because it is quite straightforward)
+- use case doesn't need any input so it's going to get categories from the API wrapper directly
+- if need it, it will fill database with non existing categories
+- once done, use case will return all categories list (I'm following JSON API specification but it's not formal, I prefer to keep it flexible, and I am not using any gem to help me with that, frontend will be able to work with it)

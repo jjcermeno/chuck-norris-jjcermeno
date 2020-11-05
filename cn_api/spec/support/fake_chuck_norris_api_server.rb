@@ -3,21 +3,21 @@ require 'sinatra/base'
 class FakeChuckNorrisApiServer < Sinatra::Base
   get '/jokes/random' do
     if params[:category]
-      puts "INTERCEPTING category"
+      # puts "INTERCEPTING category"
       json_response 200, 'category.json'
     else
-      puts "INTERCEPTING random"
+      # puts "INTERCEPTING random"
       json_response 200, 'random.json'
     end
   end
 
   get '/jokes/categories' do
-    puts "INTERCEPTING categories"
+    # puts "INTERCEPTING categories"
     json_response 200, 'categories.json'
   end
 
   get '/jokes/search' do
-    puts "INTERCEPTING search"
+    # puts "INTERCEPTING search"
     json_response 200, 'yes_sir.json'
   end
 
