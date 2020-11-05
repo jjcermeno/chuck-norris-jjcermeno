@@ -6,9 +6,9 @@ RSpec.describe 'Categories API', type: :request do
   let(:category_id) { category.first.id }
 
   # Test suite for GET /categories
-  describe 'GET /categories' do
+  describe 'GET /api/v1/categories' do
     # make HTTP get request before each example
-    before { get '/categories' }
+    before { get '/api/v1/categories' }
 
     it 'returns categories' do
       # Note `json` is a custom helper to parse JSON responses

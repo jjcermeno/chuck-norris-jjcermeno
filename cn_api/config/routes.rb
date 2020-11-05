@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get "categories", controller: :categories, action: :index
+      get "status", controller: :status, action: :index
     end
   end
 

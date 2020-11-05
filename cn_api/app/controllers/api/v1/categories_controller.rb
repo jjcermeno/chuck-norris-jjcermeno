@@ -4,7 +4,9 @@ module Api
 
       # GET /categories
       def index
-        render json: []
+        data = {}
+        json = Oj.dump(data)
+        render json: json, status: :ok
       end
 
     end
