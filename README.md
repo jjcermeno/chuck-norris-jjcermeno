@@ -21,7 +21,7 @@ So, nothing complex, just perform a search obtaining results from an external AP
 
 ## Initial Architecture considerations
 
-I will try to use Clean Architecture, specifically the use of Interactors (or use cases), Forms (for incoming data validation from front end requests), Repositories (to read and save to a persistent storage system) and probably DTOs.
+I will try to use Clean Architecture, specifically the use of Interactors (or use cases), Forms (for incoming data validation from front end requests), Repositories (to read and save to a persistent storage system) and probably DTOs. 
 
 I think I will prepare 4 use cases: 
 
@@ -29,6 +29,8 @@ I think I will prepare 4 use cases:
 - create new search based on some parameters
 - get all searches (paginated) done so far
 - get specific search and its results (paginated)
+
+One good framework I started to take a look at one year and a half ago is [Trailblazer](https://github.com/trailblazer/trailblazer) and [Hanami](https://hanamirb.org/) but I don't have time now for experiments (I will do some with the frontend, `Vuejs`, which I never used before) so I will stick with the good old Ruby on Rails.
 
 I think that one of the best ways to use Rails is using use-case oriented Rails. This way we can have any feature we want and conveniently decoupled so we can build features based on other features. Furthermore, we can do it in a very verbose way, like plain English, very easy to understand, thus to maintain.
 
@@ -126,11 +128,11 @@ Once we have created the models using command `rails g model`, it creates tests 
 
 I am going to create request tests because those tests everything: routing, logic, responses, validation of incoming data, everything. However, I will probably write some unit test for specific pieces like the external API wrapper with mocked data.
 
-### Status
+### Service Info
 
-Status is a small service just returns some info about the service like the service descriptive name, version, total count of jokes, searches and categories in the database.
+Info is a small service just returns some info about the service like the service descriptive name, version, total count of jokes, searches and categories in the database.
 
-It comes with tests.
+It comes with test.
 
 ### GET /api/v1/categories
 
@@ -147,3 +149,5 @@ So the (initial) workflow is:
 - use case doesn't need any input so it's going to get categories from the API wrapper directly
 - if need it, it will fill database with non existing categories
 - once done, use case will return all categories list (I'm following JSON API specification but it's not formal, I prefer to keep it flexible, and I am not using any gem to help me with that, frontend will be able to work with it)
+
+Tests are mocked as it should be, we can't test with real API services because we need predictable tests and we can't leave chance to connection errors, API server slow responses and that kind of nuances. Better have predictable and specific tests.
