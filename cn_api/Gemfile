@@ -30,6 +30,7 @@ gem 'oj'
 gem 'json'
 gem 'sinatra'
 gem 'caze'
+gem 'will_paginate'
 
 
 group :development, :test do

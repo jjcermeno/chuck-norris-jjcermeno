@@ -5,8 +5,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get "categories", controller: :categories, action: :index
       get "info", controller: :info, action: :index
+      get "categories", controller: :categories, action: :index
+      resources :searches, only: [:index, :show, :create]
     end
   end
 

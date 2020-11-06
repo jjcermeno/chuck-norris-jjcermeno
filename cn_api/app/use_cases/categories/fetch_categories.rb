@@ -1,5 +1,3 @@
-require 'caze'
-
 module Categories
   class FetchCategories
     include Caze

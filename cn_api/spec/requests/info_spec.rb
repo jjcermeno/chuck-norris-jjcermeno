@@ -4,7 +4,7 @@ RSpec.describe 'Info API', type: :request do
   # initialize test data
   # let!(:categories) { create_list(:categories, 10) }
   # let(:category_id) { categories.first.id }
-  let(:expected_response) {
+  let!(:expected_response) {
       {
       "data": [
               {
