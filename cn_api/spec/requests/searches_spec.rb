@@ -10,6 +10,11 @@ RSpec.describe 'Searches API', type: :request do
       search.id = initial_index
       search.save
       initial_index += 1
+      search.jokes.each do |joke|
+        joke.id = initial_index
+        joke.save
+        initial_index += 1
+      end
     end
   }
   let!(:search_id) { searches.first.id }
@@ -93,7 +98,7 @@ RSpec.describe 'Searches API', type: :request do
     end
 
     context 'when the record does not exist' do
-      let(:search_id) { 987654321123456789  }
+      let(:search_id) { 987654321123456789 }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
@@ -108,30 +113,110 @@ RSpec.describe 'Searches API', type: :request do
   # Test suite for POST /api/v1/searches
   describe 'POST /api/v1/searches' do
     # valid payload
-    let(:valid_attributes) { { title: 'Learn Elm', created_by: '1' } }
+    let(:valid_attributes_word) {
+      {
+      searchType: 'WoRd',
+      searchValue: 'yessir',
+      email: 'jjcerpo@gmail.com'
+      }
+    }
 
-    context 'when the request is valid' do
-      before { post '/api/v1/searches', params: valid_attributes }
+    context 'when the request is valid using word' do
+      before { post '/api/v1/searches', params: valid_attributes_word }
 
-      xit 'creates a search' do
-        expect(json['title']).to eq('Learn Elm')
+      it 'creates a search' do
+        puts JSON.pretty_generate(json)
+        expect(json['data'].first['searchType']).to eq('word')
+        expect(json['data'].first['searchValue']).to eq('yessir')
+        expect(json['data'].first['email']).to eq('jjcerpo@gmail.com')
+        expect(json['data'].first['total_jokes']).to eq(1)
       end
 
-      xit 'returns status code 201' do
+      it 'returns status code 201' do
         expect(response).to have_http_status(201)
       end
     end
 
-    context 'when the request is invalid' do
-      before { post '/api/v1/searches', params: { title: 'Foobar' } }
+    let(:valid_attributes_category) {
+      {
+      searchType: 'cAtegory',
+      searchValue: 'animal',
+      email: 'jjcerpo@gmail.com'
+      }
+    }
 
-      xit 'returns status code 422' do
+    context 'when the request is valid using category' do
+      before { post '/api/v1/searches', params: valid_attributes_category }
+
+      it 'creates a search' do
+        puts JSON.pretty_generate(json)
+        expect(json['data'].first['searchType']).to eq('category')
+        expect(json['data'].first['searchValue']).to eq('animal')
+        expect(json['data'].first['email']).to eq('jjcerpo@gmail.com')
+        expect(json['data'].first['total_jokes']).to eq(1)
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    let(:valid_attributes_random) {
+      {
+      searchType: 'ranDOm',
+      email: 'jjcerpo@gmail.com'
+      }
+    }
+
+    context 'when the request is valid using random' do
+      before { post '/api/v1/searches', params: valid_attributes_random }
+
+      it 'creates a search' do
+        puts JSON.pretty_generate(json)
+        expect(json['data'].first['searchType']).to eq('random')
+        expect(json['data'].first['email']).to eq('jjcerpo@gmail.com')
+        expect(json['data'].first['total_jokes']).to eq(1)
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'when the request is invalid because of email' do
+      before { post '/api/v1/searches', params: {email: 'jjcerpo-gmail.com'} }
+
+      it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
 
-      xit 'returns a validation failure message' do
-        expect(response.body)
-        .to match(/Validation failed: Created by can't be blank/)
+      it 'returns a validation failure message' do
+        expect(json['errors'].to_s).to match(/can't be blank/)
+      end
+    end
+
+    context 'when the request is invalid because of search_type' do
+      before { post '/api/v1/searches', params: {searchType: 'bad_search_type'} }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(json['errors'].to_s)
+        .to match(/are allowed/)
+      end
+    end
+
+    context 'when the request is valid because of search_type with empty search_value' do
+      before { post '/api/v1/searches', params: {searchType: 'woRd'} }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(json['errors'].to_s).to match(/can't be blank/)
       end
     end
   end

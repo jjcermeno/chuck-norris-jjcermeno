@@ -4,6 +4,6 @@ FactoryBot.define do
     joke_url    { Faker::Internet.url }
     icon_url    { Faker::Internet.url }
     ext_id      { Faker::Internet.uuid }
-    id          { Faker::Number.within(range: 1..100000) }
+    id          { Faker::Number.within(range: 1..1000000) }
   end
 end

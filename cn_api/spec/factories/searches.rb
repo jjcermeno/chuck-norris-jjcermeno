@@ -4,6 +4,6 @@ FactoryBot.define do
     search_type { ["word", "category", "random"].sample }
     search_value { Faker::Space.planet }
     email { Faker::Internet.email }
-    jokes { create_list(:joke, 5) }
+    jokes { create_list(:joke, (1..5).to_a.sample) }
   end
 end

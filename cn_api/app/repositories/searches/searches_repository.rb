@@ -16,7 +16,7 @@ module Searches
     def create_search(params) end
 
     def show_search(id)
-      Api::V1::SearchPresenter.new(get_search(id))
+      Api::V1::SearchDetailedPresenter.new(get_search(id))
     end
 
     def get_searches_page(page, per_page)

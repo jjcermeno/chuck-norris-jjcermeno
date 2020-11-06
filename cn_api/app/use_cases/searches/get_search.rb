@@ -15,8 +15,7 @@ module Searches
 
     def call
       begin
-        check_params
-        get_search
+        get_search if params_ok?
       rescue => e
         @errors << {error: e}
       end
@@ -25,10 +24,14 @@ module Searches
 
     private
 
-    def check_params
+    def params_ok?
       form = Searches::GetSearchForm.from_json(params)
-      raise StandardError.new("Parameter 'id' required") unless form.valid?
-      @id = params["id"]
+      if form.valid?
+        @id = form.id
+      else
+        @errors << form.errors.messages
+      end
+      return form.valid?
     end
 
     def get_search
