@@ -52,7 +52,7 @@ Rails.application.configure do
 
   ActionMailer::Base.smtp_settings = {
   :user_name => 'apikey',
-  :password => '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',
+  :password => ENV['SENGRID_API_KEY'],
   :domain => 'gmail.com',
   :address => 'smtp.sendgrid.net',
   :port => 587,

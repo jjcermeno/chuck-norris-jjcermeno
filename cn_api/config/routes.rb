@@ -7,7 +7,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       get "info", controller: :info, action: :index
       get "categories", controller: :categories, action: :index
-      resources :searches, only: [:index, :show, :create]
+      resources :searches, only: [:index, :show, :create] do
+        member do
+          get :resend_email
+        end
+      end
     end
   end
 

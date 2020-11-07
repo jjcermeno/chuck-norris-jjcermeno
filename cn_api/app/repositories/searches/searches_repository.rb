@@ -28,6 +28,11 @@ module Searches
       Api::V1::SearchDetailedPresenter.new(search, params)
     end
 
+    def show_simple_search(id)
+      search         = get_search(id)
+      Api::V1::SearchPresenter.new(search)
+    end
+
     def get_searches_page(page, per_page)
       Search.paginate(page: page, per_page: per_page)
     end

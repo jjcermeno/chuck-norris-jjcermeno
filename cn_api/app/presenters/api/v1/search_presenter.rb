@@ -11,7 +11,7 @@ module Api
         "email":       @resource.email,
         "createdAt":   datetime_to_string(@resource.created_at),
         "updatedAt":   datetime_to_string(@resource.updated_at),
-        "total_jokes": jokes_count
+        "totalJokes": jokes_count
         }.as_json
       end
 

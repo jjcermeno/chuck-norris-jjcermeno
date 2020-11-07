@@ -135,9 +135,9 @@ RSpec.describe 'Searches API', type: :request do
     # valid payload
     let(:valid_attributes_word) {
       {
-      searchType: 'WoRd',
+      searchType:  'WoRd',
       searchValue: 'yessir',
-      email: 'jjcerpo@gmail.com'
+      email:       'jjcerpo@gmail.com'
       }
     }
 
@@ -158,9 +158,9 @@ RSpec.describe 'Searches API', type: :request do
 
     let(:valid_attributes_category) {
       {
-      searchType: 'cAtegory',
+      searchType:  'cAtegory',
       searchValue: 'animal',
-      email: 'jjcerpo@gmail.com'
+      email:       'jjcerpo@gmail.com'
       }
     }
 
@@ -182,7 +182,7 @@ RSpec.describe 'Searches API', type: :request do
     let(:valid_attributes_random) {
       {
       searchType: 'ranDOm',
-      email: 'jjcerpo@gmail.com'
+      email:      'jjcerpo@gmail.com'
       }
     }
 
@@ -234,6 +234,37 @@ RSpec.describe 'Searches API', type: :request do
 
       it 'returns a validation failure message' do
         expect(json['errors'].to_s).to match(/can't be blank/)
+      end
+    end
+  end
+
+  describe 'GET /api/v1/searches/:id/resend_email' do
+    let(:search_email) { create(:search_with_email) }
+    let(:search_no_email) { create(:search_with_no_email) }
+    before { get "/api/v1/searches/#{search_email.id}/resend_email" }
+    context 'when the search exists and it has valid email' do
+      it 'resends the email' do
+        puts JSON.pretty_generate json
+        expect(json).not_to be_empty
+        expect(json["data"].first.key?"id").to eq(true)
+        expect(json["data"].first.key?"totalJokes").to eq(true)
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    before { get "/api/v1/searches/#{search_no_email.id}/resend_email" }
+    context 'when the search exists and it has not email' do
+      it 'returns error' do
+        puts JSON.pretty_generate json
+        expect(json).not_to be_empty
+        expect(json['errors'].to_s).to match(/no email/)
+      end
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
       end
     end
   end
