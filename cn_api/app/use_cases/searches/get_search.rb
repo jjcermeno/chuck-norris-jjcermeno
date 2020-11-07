@@ -54,16 +54,16 @@ module Searches
       @search = searches_repository.get_search(id)
       if search.present?
         create_metadata
-        @data << searches_repository.show_search(id, @meta)
+        @data << searches_repository.show_search(id, @meta.dup)
       else
         @errors << {error: 'Search not found'}
       end
-      @meta.delete(:objects)
     end
 
     def create_metadata
       @meta[:totalJokes] = search.jokes.size
       @meta[:totalPages] = (@meta[:totalJokes] / per_page) + 1
+      @page = @meta[:totalPages] if page > @meta[:totalPages]
       @meta[:pageNumber] = page
       @meta[:pageSize] = per_page
     end

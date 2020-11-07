@@ -115,12 +115,11 @@ RSpec.describe 'Searches API', type: :request do
 
     context 'when the record exists and paginating resulting jokes' do
       it 'returns the search' do
-        puts JSON.pretty_generate(json)
         expect(json).not_to be_empty
         expect(json["data"].first["id"]).to eq(search_id)
         expect(json["meta"]["totalJokes"]).to eq(0)
         expect(json["meta"]["totalPages"]).to eq(1)
-        expect(json["meta"]["pageNumber"]).to eq(2)
+        expect(json["meta"]["pageNumber"]).to eq(1)
         expect(json["meta"]["pageSize"]).to eq(3)
       end
 
