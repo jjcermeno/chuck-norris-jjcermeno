@@ -4,5 +4,8 @@ COPY package*.json ./
 RUN yarn install
 RUN yarn add axios
 RUN yarn add bulma
+RUN yarn add buefy
+#RUN npm install axios
+#RUN npm install buefy
 COPY . .
 CMD ["yarn", "serve"]
