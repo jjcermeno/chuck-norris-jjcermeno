@@ -36,6 +36,7 @@ services:
     environment:
       - PORT=3000
       - REDIS_URL_SIDEKIQ=redis://redis:6379/1
+      - SENDGRID_API_KEY=$SENDGRID_API_KEY
     volumes:
       - ./cn_api:/cn_api
       - rails_log:/cn_api/log

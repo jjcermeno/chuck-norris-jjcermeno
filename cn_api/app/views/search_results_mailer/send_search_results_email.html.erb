@@ -1,0 +1,19 @@
+  <h1>Here the results for your search (<%= @search.search_type%>)</h1>
+  <p>Search ID: <%= @search.id %></p>
+  <p>Search Type: <%= @search.search_type %></p>
+  <% if %w(word category).include? @search.search_type %>
+  <p>Search Value: <%= @search.search_value.to_s %></p>
+  <% end %>
+  <p>Total Jokes: <%= @search.jokes.size %></p>
+  <br>
+  <p><strong>Jokes list</strong></p>
+  <% @search.jokes.each do |joke| %>
+    <p></p>
+    <p><hr></p>
+    <p><img src="<%= joke.icon_url.to_s %>"><br></p>
+    <p>ID: <%= joke.id.to_s %> | <%= joke.ext_id.to_s %></p>
+    <p>URL: <a href="<%= joke.joke_url %>"><%= joke.joke_url %></a></p>
+    <p>
+      <%= joke.joke_value.to_s %>
+    </p>
+  <% end %>
