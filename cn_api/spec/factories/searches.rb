@@ -9,41 +9,16 @@ FactoryBot.define do
     end
     # jokes { create_list(:joke, (1..5).to_a.sample) }
     factory :search_with_email do
-      id { 5000 }
-      search_type { ["word", "category", "random"].sample }
-      search_value { Faker::Space.planet }
-      email { Faker::Internet.email }
-      # jokes { create_list(:joke, (1..5).to_a.sample) }
+      after(:create) do |search|
+        search.id = 5000
+      end
     end
     factory :search_with_no_email do
-      id { 6000 }
-      search_type { ["word", "category", "random"].sample }
-      search_value { Faker::Space.planet }
-      email { nil }
-      # jokes { create_list(:joke, (1..5).to_a.sample) }
+      after(:create) do |search|
+        search.id = 6000
+        search.email = nil
+      end
     end
   end
 
 end
-
-
-# FactoryBot.define do
-#   factory :account do
-#     sequence(:name) { Faker::Name.name }
-#     kind { 'demo' }
-#     category { 'personal' }
-#
-#     factory :account_with_transactions do
-#       after(:create) do |account|
-#         create_list :deposit, 2, account: account
-#         create_list :withdrawal, 2, account: account
-#       end
-#     end
-#
-#     factory :account_with_user do
-#       after(:create) do |account|
-#         account.users = build_list(:user, 1)
-#       end
-#     end
-#   end
-# end
