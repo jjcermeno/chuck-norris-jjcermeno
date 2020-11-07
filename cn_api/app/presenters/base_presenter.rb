@@ -2,9 +2,10 @@
 
 class BasePresenter
 
-  attr_reader :resource
+  attr_reader :resource, :parameters
   
-  def initialize(resource)
+  def initialize(resource, params = nil)
     @resource = resource
+    @parameters = params
   end
 end

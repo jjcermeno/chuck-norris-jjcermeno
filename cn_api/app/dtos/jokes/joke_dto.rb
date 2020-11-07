@@ -15,8 +15,5 @@ module Jokes
       new_dto
     end
 
-    validates_presence_of :ext_id
-    validates_presence_of :joke_value
-
   end
 end

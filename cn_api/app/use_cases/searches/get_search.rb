@@ -31,16 +31,41 @@ module Searches
       else
         @errors << form.errors.messages
       end
-      return form.valid?
+      form.valid?
+    end
+
+    def calculate_pages
+      default_page_size   = 5
+      default_page_number = 1
+      min_page_size       = 1
+      min_page_number     = 1
+      max_page_size       = 100
+      page_size           = params['pageSize'].present? ? params['pageSize'].to_i : default_page_size
+      page_size           = max_page_size if page_size > max_page_size
+      page_size           = min_page_size if page_size.negative?
+      page_number         = params['pageNumber'].present? ? params['pageNumber'].to_i : default_page_number
+      page_number         = min_page_number if page_number.negative?
+      @page               = page_number
+      @per_page           = page_size
     end
 
     def get_search
-      data_to_append = searches_repository.show_search(id)
-      if data_to_append.resource.present?
-        @data << searches_repository.show_search(id)
+      calculate_pages
+      @search = searches_repository.get_search(id)
+      if search.present?
+        create_metadata
+        @data << searches_repository.show_search(id, @meta)
       else
         @errors << {error: 'Search not found'}
       end
+      @meta.delete(:objects)
+    end
+
+    def create_metadata
+      @meta[:totalJokes] = search.jokes.size
+      @meta[:totalPages] = (@meta[:totalJokes] / per_page) + 1
+      @meta[:pageNumber] = page
+      @meta[:pageSize] = per_page
     end
 
     def searches_repository
@@ -54,6 +79,19 @@ module Searches
     def id
       @id
     end
+
+    def page
+      @page
+    end
+
+    def per_page
+      @per_page
+    end
+
+    def search
+      @search
+    end
+
 
   end
 end

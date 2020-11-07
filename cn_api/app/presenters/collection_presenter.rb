@@ -7,6 +7,6 @@ class CollectionPresenter < BasePresenter
   end
 
   def as_json
-    @resource.map { |item| @presenter.new(item).as_json }
+    @resource.map { |item| @presenter.new(item).as_json } if @resource.present?
   end
 end

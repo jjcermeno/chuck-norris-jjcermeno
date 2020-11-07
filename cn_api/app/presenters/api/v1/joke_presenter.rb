@@ -6,9 +6,9 @@ module Api
       def as_json
         {
         "id":        @resource.id,
-        "jokeValue": @resource.search_type,
-        "jokeUrl":   @resource.search_value,
-        "iconUrl":   @resource.email,
+        "jokeValue": @resource.joke_value,
+        "jokeUrl":   @resource.joke_url,
+        "iconUrl":   @resource.icon_url,
         "createdAt": datetime_to_string(@resource.created_at),
         "updatedAt": datetime_to_string(@resource.updated_at),
         "extId":     @resource.ext_id

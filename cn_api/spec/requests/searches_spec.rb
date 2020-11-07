@@ -35,8 +35,8 @@ RSpec.describe 'Searches API', type: :request do
     end
 
     context 'with page_size = 2' do
-      before { get '/api/v1/searches?page_size=2' }
-      it 'returns searches for page_size 2' do
+      before { get '/api/v1/searches?pageSize=2' }
+      it 'returns searches for pageSize 2' do
         expect(json).not_to be_empty
         expect(json["data"].size).to eq(2)
       end
@@ -46,8 +46,8 @@ RSpec.describe 'Searches API', type: :request do
     end
 
     context 'with page_number = 2' do
-      before { get '/api/v1/searches?page_number=2' }
-      it 'returns searches for page_number default page_number' do
+      before { get '/api/v1/searches?pageNumber=2' }
+      it 'returns searches for pageNumber default pageNumber' do
         expect(json).not_to be_empty
         expect(json["data"].size).to eq(5)
       end
@@ -58,8 +58,8 @@ RSpec.describe 'Searches API', type: :request do
     end
 
     context 'with page_number = 3' do
-      before { get '/api/v1/searches?page_number=3' }
-      it 'returns searches for page_number = 3' do
+      before { get '/api/v1/searches?pageNumber=3' }
+      it 'returns searches for pageNumber = 3' do
         expect(json).not_to be_empty
         expect(json["data"].size).to eq(2)
       end
@@ -69,9 +69,9 @@ RSpec.describe 'Searches API', type: :request do
       end
     end
 
-    context 'with page_number = 2 and page_size = 3' do
-      before { get '/api/v1/searches?page_number=2&page_size=3' }
-      it 'returns searches for page_number = 2 and page_size = 3' do
+    context 'with pageNumber = 2 and pageSize = 3' do
+      before { get '/api/v1/searches?pageNumber=2&pageSize=3' }
+      it 'returns searches for pageNumber = 2 and pageSize = 3' do
         expect(json).not_to be_empty
         expect(json["data"].size).to eq(3)
       end
@@ -110,6 +110,27 @@ RSpec.describe 'Searches API', type: :request do
     end
   end
 
+  describe 'GET /api/v1/searches/:id?page_number=2&page_size=3' do
+    before { get "/api/v1/searches/#{search_id}?pageNumber=2&pageSize=3" }
+
+    context 'when the record exists and paginating resulting jokes' do
+      it 'returns the search' do
+        puts JSON.pretty_generate(json)
+        expect(json).not_to be_empty
+        expect(json["data"].first["id"]).to eq(search_id)
+        expect(json["meta"]["totalJokes"]).to eq(0)
+        expect(json["meta"]["totalPages"]).to eq(1)
+        expect(json["meta"]["pageNumber"]).to eq(2)
+        expect(json["meta"]["pageSize"]).to eq(3)
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+  end
+
   # Test suite for POST /api/v1/searches
   describe 'POST /api/v1/searches' do
     # valid payload
@@ -125,11 +146,10 @@ RSpec.describe 'Searches API', type: :request do
       before { post '/api/v1/searches', params: valid_attributes_word }
 
       it 'creates a search' do
-        puts JSON.pretty_generate(json)
         expect(json['data'].first['searchType']).to eq('word')
         expect(json['data'].first['searchValue']).to eq('yessir')
         expect(json['data'].first['email']).to eq('jjcerpo@gmail.com')
-        expect(json['data'].first['total_jokes']).to eq(1)
+        expect(json['data'].first['totalJokes']).to eq(1)
       end
 
       it 'returns status code 201' do
@@ -149,11 +169,10 @@ RSpec.describe 'Searches API', type: :request do
       before { post '/api/v1/searches', params: valid_attributes_category }
 
       it 'creates a search' do
-        puts JSON.pretty_generate(json)
         expect(json['data'].first['searchType']).to eq('category')
         expect(json['data'].first['searchValue']).to eq('animal')
         expect(json['data'].first['email']).to eq('jjcerpo@gmail.com')
-        expect(json['data'].first['total_jokes']).to eq(1)
+        expect(json['data'].first['totalJokes']).to eq(1)
       end
 
       it 'returns status code 201' do
@@ -172,10 +191,9 @@ RSpec.describe 'Searches API', type: :request do
       before { post '/api/v1/searches', params: valid_attributes_random }
 
       it 'creates a search' do
-        puts JSON.pretty_generate(json)
         expect(json['data'].first['searchType']).to eq('random')
         expect(json['data'].first['email']).to eq('jjcerpo@gmail.com')
-        expect(json['data'].first['total_jokes']).to eq(1)
+        expect(json['data'].first['totalJokes']).to eq(1)
       end
 
       it 'returns status code 201' do
@@ -184,18 +202,18 @@ RSpec.describe 'Searches API', type: :request do
     end
 
     context 'when the request is invalid because of email' do
-      before { post '/api/v1/searches', params: {email: 'jjcerpo-gmail.com'} }
+      before { post '/api/v1/searches', params: {searchType: 'random', email: 'jjcerpo-gmail.com'} }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
 
       it 'returns a validation failure message' do
-        expect(json['errors'].to_s).to match(/can't be blank/)
+        expect(json['errors'].to_s).to match(/invalid/)
       end
     end
 
-    context 'when the request is invalid because of search_type' do
+    context 'when the request is invalid because of wrong search_type' do
       before { post '/api/v1/searches', params: {searchType: 'bad_search_type'} }
 
       it 'returns status code 422' do
@@ -208,7 +226,7 @@ RSpec.describe 'Searches API', type: :request do
       end
     end
 
-    context 'when the request is valid because of search_type with empty search_value' do
+    context 'when the request is invalid because of search_type with empty search_value' do
       before { post '/api/v1/searches', params: {searchType: 'woRd'} }
 
       it 'returns status code 422' do

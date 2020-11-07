@@ -11,7 +11,7 @@ module Api
         "email":       @resource.email,
         "createdAt":   datetime_to_string(@resource.created_at),
         "updatedAt":   datetime_to_string(@resource.updated_at),
-        "total_jokes": jokes_count,
+        "totalJokes":  jokes_count,
         "jokes":       jokes
         }.as_json
       end
@@ -29,12 +29,12 @@ module Api
       end
 
       def jokes_count
-        @resource.jokes.size
+        @parameters[:totalJokes]
       end
 
       def jokes
         CollectionPresenter.new(
-        @resource.jokes,
+        @parameters[:objects],
         Api::V1::JokePresenter
         )
       end

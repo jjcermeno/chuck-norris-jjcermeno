@@ -15,15 +15,15 @@ module Searches
     def call
       begin
         raise StandardError.new "Input data not valid" unless params_ok?
+        create_search
         perform_jokes_search
         process_jokes
-        save_jokes
-        save_search
       rescue => e
         @errors << {error: e}
         return DataResult.new(data: [], meta: @meta, errors: @errors)
       end
-      @data_result = DataResult.new(data: @data, meta: @meta, errors: @errors)
+      Manager.get_search({id: @id})
+      # @data_result = DataResult.new(data: @data, meta: @meta, errors: @errors)
     end
 
     private
@@ -31,7 +31,13 @@ module Searches
     def params_ok?
       @form = Searches::CreateSearchForm.from_json(params)
       @errors << form.errors.messages unless form.valid?
-      return form.valid?
+      form.valid?
+    end
+
+    def create_search
+      @search = searches_repository.create_search(form)
+      @id = search.id
+      @data = [{id: @id}]
     end
 
     def perform_jokes_search
@@ -53,27 +59,29 @@ module Searches
 
     def process_jokes
       remote_jokes.each do |remote_joke|
-        puts remote_joke.as_json
-        joke_dto = Jokes::JokeDto.from_json(remote_joke)
-        next unless joke_dto.valid?
-        if joke_exists?
-          link_joke_to_search
-        else
-          create_new_joke
-        end
+        joke_form = Jokes::JokeForm.from_json(remote_joke)
+        next unless joke_form.valid?
+        joke = jokes_repository.find_or_create(joke_form)
+        add_joke_to_search(joke)
       end
     end
 
-    def save_jokes
-
+    def add_joke_to_search(joke)
+      search.jokes << joke
+      search.jokes = search.jokes.uniq
+      search.save
     end
 
-    def save_search
-
+    def cn_api
+      @cn_api ||= ApiWrappers::ChuckNorrisApi::Client.new
     end
 
-    def get_search_data
+    def searches_repository
+      @searches_repository ||= Searches::SearchesRepository.new
+    end
 
+    def jokes_repository
+      @jokes_repository ||= Jokes::JokesRepository.new
     end
 
     def params
@@ -88,24 +96,8 @@ module Searches
       @form
     end
 
-    def cn_api
-      @cn_api ||= ApiWrappers::ChuckNorrisApi::Client.new
-    end
-
-    def searches_repository
-      @searches_repository ||= Searches::SearchesRepository.new
-    end
-
-    def joke_exists?
-      false
-    end
-
-    def link_joke_to_search
-
-    end
-
-    def create_new_joke
-
+    def search
+      @search
     end
 
   end

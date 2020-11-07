@@ -1,3 +1,31 @@
+### Backend Code Challenge
+
+We'd like you to complete a short programming exercise. You can use any
+programming language. This test should take you around 4-5 hours. Don't worry if you finish faster,
+or if it takes you a little longer, as being comfortable with the tooling matters. As you've been told, we'd like you to send your work to us in the following 7 days.
+
+**Instructions**
+Develop a Chuck Norris fact search application. Your source of information will be this API: [https://api.chucknorris.io/](https://api.chucknorris.io/)
+
+**Requirements**
+
+- No login is required.
+- Users will be able to search by:
+    - Words
+    - Categories
+    - Randomly
+- Results will be paginated.
+- Each search (and the results) will be stored in a database.
+- The user will be able to (optionally) enter his/her email address to receive the search results.
+- The app will be available both in English and Spanish. Only the app itself, the results
+of the API queries don’t need to be translated and can be presented in English.
+- The design of the web page and the emails are completely up to you.
+- The data model and the database technology are up to you as well.
+- Any other functionality can be added if desired.
+- Notes
+    - Please submit your solution and any notes as a Git repository (GitHub, Gitlab, etc)
+    - Let us know how to run your solution and its tests (README)
+
 ## Before coding
 
 After reading carefully the coding challenge proposal I started to think about it. At first glance it was kind of easy and quite straightforward. The following this is what I understood and some of the ideas I started to have on how I could solve it (it may change later, I will document it anyway):
@@ -148,6 +176,6 @@ So the (initial) workflow is:
 - then, `fetch_categories` use case is called when endpoint is reached (I'm using gem `caze` because it is quite straightforward)
 - use case doesn't need any input so it's going to get categories from the API wrapper directly
 - if need it, it will fill database with non existing categories
-- once done, use case will return all categories list (I'm following JSON API specification but it's not formal, I prefer to keep it flexible, and I am not using any gem to help me with that, frontend will be able to work with it)
+- once done, use case will return all categories list (I'm applying some kind of JSON API specification, I prefered to keep it flexible to my needs, and I am not using any gem to help me with that like [jsonapi-serializer](https://github.com/jsonapi-serializer/jsonapi-serializer), frontend will be able to work with it)
 
 Tests are mocked as it should be, we can't test with real API services because we need predictable tests and we can't leave chance to connection errors, API server slow responses and that kind of nuances. Better have predictable and specific tests.

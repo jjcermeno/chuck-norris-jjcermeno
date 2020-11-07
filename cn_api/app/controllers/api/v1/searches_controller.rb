@@ -22,13 +22,13 @@ module Api
       def create
         data_result = Manager.create_search(params)
         status = data_result.data.present? ? :created : :unprocessable_entity
-        if status == :created
-          search_id = status.&data.&first["id"]
-          if search_id.present?
-            redirect_to api_v1_search(search_id)
-            return
-          end
-        end
+        # if status == :created
+        #   search_id = data_result.data.first["id"]
+        #   if search_id.present?
+        #     redirect_to api_v1_search(search_id)
+        #     return
+        #   end
+        # end
         json = Oj.dump(data_result.as_json)
         render json: json, status: status
       end
