@@ -238,9 +238,9 @@ RSpec.describe 'Searches API', type: :request do
     end
   end
 
+  # let!(:search_email) { build(:search_with_email) }
+  # let!(:search_no_email) { build(:search_with_no_email) }
   # describe 'GET /api/v1/searches/:id/resend_email' do
-  #   let!(:search_email) { build(:search_with_email) }
-  #   let!(:search_no_email) { build(:search_with_no_email) }
   #   before { get "/api/v1/searches/#{search_email.id}/resend_email" }
   #   context 'when the search exists and it has valid email' do
   #     it 'resends the email' do
