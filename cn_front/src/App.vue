@@ -2,7 +2,7 @@
   <div class="container">
     <div class="columns">
       <div class="column">
-        <SearchForm></SearchForm>
+        <SearchForm :openSearchResults="openSearch"></SearchForm>
       </div>
     </div>
   </div>

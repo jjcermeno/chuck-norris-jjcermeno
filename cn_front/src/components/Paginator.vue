@@ -34,7 +34,7 @@ export default {
     }
   },
   created() {
-    console.log("Paginator created", JSON.stringify(this.pagination_data));
+    // console.log("Paginator created", JSON.stringify(this.pagination_data));
     // this.setPaginationData(null);
   },
   updated() {

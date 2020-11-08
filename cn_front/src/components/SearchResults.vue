@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-3 mb-3">
     <div class="notification is-primary has-text-centered">
-      <h4 class="title mb-6">
+      <h4 class="title">
         Jokes from Search {{ search.id }}
       </h4>
     </div>
