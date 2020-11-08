@@ -1,26 +1,47 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App" optional_msg="for your Rails back end!"/>
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <SearchForm :openSearchResults="openSearch"></SearchForm>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <SearchList :openSearchResults="openSearch"></SearchList>
+      </div>
+      <div class="column">
+        <SearchResults :search_id="search_trigger"></SearchResults>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SearchForm from '@/components/SearchForm.vue'
+import SearchResults from '@/components/SearchResults.vue'
+import SearchList from '@/components/SearchList.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    SearchForm,
+    SearchResults,
+    SearchList
+  },
+  data() {
+    return {
+      search_trigger: null
+    }
+  },
+  methods: {
+    openSearch(row) {
+      this.search_trigger = row.id
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

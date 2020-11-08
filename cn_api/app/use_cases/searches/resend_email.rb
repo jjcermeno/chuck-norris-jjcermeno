@@ -43,12 +43,8 @@ module Searches
     def send_email
       if search.email.present?
         @data << searches_repository.show_simple_search(id)
-        puts "-----------------DATA"
-        puts @data.as_json
-        puts "---------------------"
         SendResultsEmail.perform_later(search)
       else
-        puts "--------------------- RAISED EXCEPTION NO EMAIL"
         raise StandardError.new "This Search has no email address to send to"
       end
     end

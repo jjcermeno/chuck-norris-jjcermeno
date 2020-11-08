@@ -42,10 +42,11 @@ module Searches
     def get_searches
       @meta[:totalSearches] = searches_repository.total_searches
       @meta[:totalPages] = (@meta[:totalSearches] / per_page) + 1
+      @page = @meta[:totalPages] if page > @meta[:totalPages]
       @meta[:pageNumber] = page
       @meta[:pageSize] = per_page
       searches_data = searches_repository.get_searches_page(page, per_page)
-      @data = searches_repository.show_searches(searches_data)
+      @data = searches_repository.show_searches(searches_data) if searches_data.size > 0
     end
 
     def searches_repository

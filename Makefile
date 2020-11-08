@@ -26,7 +26,7 @@ docker-down:
 	docker-compose down
 
 #docker-chown:
-#	cd cn_api && sudo chown -R $USER:$USER . && cd .. && cd cn_front && sudo chown -R $USER:$USER .
+#	cd cn_api && sudo chown -R $USER:$USER . && cd .. && cd cn_front && sudo chown -R $USER:$USER . && cd ..
 
 
 ################################################
