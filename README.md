@@ -282,4 +282,13 @@ Another modification is that when creating a search, at the end, if there is a v
 
 - GET /api/v1/searches/:id/resend_email
 
-that will create an email containing the jokes for the specified search. Same rules apply here, we check for existing search, valid email, and boom, we create a background job for sending the email.
+that will create an email containing the jokes for the specified search. Same rules apply here, we check for existing search, valid email, and boom, we create a background job for sending the email. 
+
+# What's out
+
+I intentionally left out:
+
+- caching. This is huge planet itself
+- adding full text search to our jokes stored in our database. I though of using ElasticSearch, but then I realize there was no time.
+
+But those 2 features were considered, then discarded.
