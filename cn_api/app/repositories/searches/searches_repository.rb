@@ -24,7 +24,7 @@ module Searches
 
     def show_search(id, params)
       search         = get_search(id)
-      params[:objects] = get_jokes_paginated(id, params[:page], params[:per_page])
+      params[:objects] = get_jokes_paginated(id, params[:pageNumber], params[:pageSize])
       Api::V1::SearchDetailedPresenter.new(search, params)
     end
 
@@ -47,7 +47,6 @@ module Searches
     def get_jokes_paginated(id, page, per_page)
       search = get_search(id)
       search.jokes.paginate(page: page, per_page: per_page).map { |joke| joke }
-
     end
 
     def total_searches

@@ -1,34 +1,49 @@
 <template>
-  <!--  <img alt="Vue logo" src="./assets/logo.png">-->
-  <!--  <HelloWorld msg="Welcome to Your Vue.js App" optional_msg="for your Rails back end!"/>-->
-  <SearchForm></SearchForm>
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <SearchForm></SearchForm>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <SearchList :openSearchResults="openSearch"></SearchList>
+      </div>
+      <div class="column">
+        <SearchResults :search_id="search_trigger"></SearchResults>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 import SearchForm from '@/components/SearchForm.vue'
-// import SearchResults from '@/components/SearchResults.vue'
-// import SearchList from '@components/SearchList.vue'
+import SearchResults from '@/components/SearchResults.vue'
+import SearchList from '@/components/SearchList.vue'
 
 export default {
   name: 'App',
   components: {
     SearchForm,
-    // SearchResults,
-    // SearchList
+    SearchResults,
+    SearchList
+  },
+  data() {
+    return {
+      search_trigger: null
+    }
+  },
+  methods: {
+    openSearch(row) {
+      console.log("open-search in App has been published with row", JSON.stringify(row))
+      this.search_trigger = row.id
+      console.log("search_trigger", this.search_trigger)
+    }
   }
 }
 </script>
 
 <style>
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
 </style>
