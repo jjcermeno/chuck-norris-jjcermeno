@@ -48,10 +48,13 @@ export default {
       }
     },
     openSearch(id) {
-      console.log("Received (SearchResults) to open search id:", id)
       ApiClient.getSearch(id)
           .then(response => this.setData(response.data))
-          .catch(error => this.api_errors = error)
+          .catch(error => {
+            this.api_errors = error
+            alert("There was some errors when getting the search, sorry. Check the console for more info.")
+            console.log(JSON.stringify(error))
+          })
     },
     set_jokes() {
       return this.jokes
@@ -65,18 +68,8 @@ export default {
       this.per_page = data.meta.pageSize
     }
   },
-  created() {
-    // if (this.id){
-    //   this.openSearch(this.id)
-    // }
-  },
-  updated() {
-  },
-  mounted() {
-  },
   watch: {
-    search_id: function (newVal, oldVal) {
-      console.log("watcher active (old - new):", oldVal, "-", newVal)
+    search_id: function (newVal) {
       if (newVal) {
         this.openSearch(newVal);
       }

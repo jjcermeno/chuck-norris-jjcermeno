@@ -30,15 +30,6 @@ export default {
     return {
       my_jokes: []
     }
-  },
-  methods: {
-
-  },
-  created() {
-
-  },
-  updated() {
-    console.log("Jokes updated", JSON.stringify(this.my_jokes));
   }
 }
 </script>

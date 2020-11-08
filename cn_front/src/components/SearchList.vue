@@ -27,19 +27,9 @@ export default {
     }
   },
   methods: {
-    refreshData() {
-      // console.log("Refreshing Search list data")
-    },
-    openSearch(row) {
-      this.openSearchResults(row)
+   openSearch(row) {
+     this.openSearchResults(row)
     }
-  },
-  created() {
-    // console.log("Search List created");
-    this.refreshData();
-  },
-  updated() {
-    // console.log("Search List updated");
   }
 }
 </script>

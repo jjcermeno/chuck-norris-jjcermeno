@@ -29,7 +29,10 @@
       </tbody>
     </table>
   </div>
-  <h6 class="title is-6 has-text-centered">Searches in total: {{ total_searches }}</h6>
+  <div class="container mt-3 mb-3">
+    <h6 class="title is-6 has-text-centered">Searches in total: {{ total_searches }}</h6>
+<!--    <button class="button is-small is-warning" @click="getData">Refresh table</button>-->
+  </div>
   <div class="container mt-3 mb-3">
     <Paginator :pagination_data="pagination_data"></Paginator>
   </div>
@@ -77,7 +80,11 @@ export default {
     getSearches(form) {
       ApiClient.getSearches(form.page_number, form.page_size)
           .then(response => this.setData(response.data))
-          .catch(error => this.api_errors = error)
+          .catch(error => {
+            this.api_errors = error
+            alert("There was some errors when trying to get search data, sorry. Check the console for more info.")
+            console.log(JSON.stringify(error))
+          })
     },
     pagination_data() {
       return {
@@ -92,10 +99,6 @@ export default {
   },
   created() {
     this.getData();
-  },
-  updated() {
-  },
-  mounted() {
   }
 }
 </script>

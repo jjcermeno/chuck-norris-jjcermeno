@@ -26,6 +26,74 @@ of the API queries don’t need to be translated and can be presented in English
     - Please submit your solution and any notes as a Git repository (GitHub, Gitlab, etc)
     - Let us know how to run your solution and its tests (README)
 
+# How to use it
+
+Download the repo to the machine you want to use. You'll find two main folders, `cn_api` and `cn_front`, a `docker-compose.yml` file, a `Makefile` file and this [`README.md`](http://readme.md) file.
+
+The `Makefile` it's very useful as I introduced there complex or very frequently used commands.
+
+The first procedure is to install and deploy so:
+
+- open a terminal and go to folder happets-jjcermeno
+- using the terminal type:
+
+    start the docker service (in Linux) if it's not started
+
+    ```bash
+    make docker-start
+    ```
+
+- if you have a valid SendGrid API Key, you may want to expose it before building the solution or it won't send any email
+
+```bash
+export SENDGRID_API_KEY=your_api_key
+```
+
+- then just build all the system
+
+```bash
+make docker-build
+```
+
+- it will install all needed software, including Ruby, Ruby on Rails, postgres, sidekiq, Vuejs and additional libraries to make them work
+- To launch the tests do
+
+```bash
+make tests
+#or
+make rspec
+```
+
+- With the tests I had some issues when dealing with ids when using factories to create objects (I am a little bit rusty), I think I solve them but in case they appear just run the tests again, it's probably they don't appear now
+- To run the solution just do
+
+```bash
+make docker-up
+#or 
+make docker-upd
+```
+
+- the last command is for detached servers, but I prefer the first one, I like taking a look at the output. In case you want stop server with the first command just press Ctrl+C. In case of the second command, use this one:
+
+```bash
+make docker-down
+```
+
+Those are the exposed ports:
+
+- 3030 for Ruby on Rails
+- 5432 for PostgreSQL
+- 6379 for Redis
+- 8091 for the frontend
+
+So, when servers are running just to [http://localhost:8091](http://localhost:8091) in your browser and enjoy the solution. That's all.
+
+Well, I won't explain the front end deeply. Just use the red form to create a new search. You can browse the searches in the green table and click over the button that reads `Open Jokes` to open the search and its jokes in the Search Viewer (the purple section). By the way, you can resend emails from the rows in the green table (if you provided the API key for SendGrid service)
+
+### Disclaimer
+
+I couldn't implement the localization in Spanish, I left it in English, because Vuejs was new for me and that simply would add more time to the exercise and adding in the backend, while I did it in the past would, again, add more time. So, I am sorry for that, but I left that out of the scope. All the other requirements are met, including the option of sending emails. 
+
 ## Before coding
 
 After reading carefully the coding challenge proposal I started to think about it. At first glance it was kind of easy and quite straightforward. The following this is what I understood and some of the ideas I started to have on how I could solve it (it may change later, I will document it anyway):
@@ -96,27 +164,51 @@ I think that one of the best ways to use Rails is using use-case oriented Rails.
 - category_name
 - jokes (will point to model `Joke`)
 
-## Use Cases
+### Potential Use cases identified
 
-### Getting CN Fact Categories
+### Getting Chuck Norris Fact Categories
 
 Because we can get Chuck Norris facts from the external API (cn_api) by searching categories, we need to get them and populate our database, so we can save time, don't need to get categories every time user perform a search by using categories.
 
 So the workflow is:
 
 - get categories (GET /api/v1/categories) endpoint is reached
-- then, GetCategories use case is called
+- then, GetCategories (or similar) use case is called
 - use case doesn't need any input so it's going to get categories from the API wrapper directly
 - if need it, it will fill database with non existing categories
 - once done, use case will return all categories list
 
 ### Create New Search
 
+It creates a new search based on parameters. The form is pretty simple. I will use a form with data about the type of search (`word`, `category` or `random`) and the content. Additionally, the form will have an email optional (it could be blank or just not coming).
+
+So the workflow is:
+
+- POST /api/v1/searches endpoing reached with a form
+- check if the form is correct
+- then create search
+- after that, ask Chuck Norris API for jokes conditioned by the parameters
+- store the resulting jokes conveniently in our database using our models. Special attention to relation between `joke-category` and `joke-search` . In the future we could use those relation to perform queries or extract data from jokes in database
+- returning a complete response containing not only the recently created search but its jokes in the same request. Front shouldn't need to make another call for getting the jokes. **Disclaimer:** in my current frontend implementation, done in `Vuejs` and due to my lack of experience (it's my first app, I just did a tutorial on a todo app two years ago) I do perform two requests. I will study how to route data from one component to other so I can save such request. **Disclaimer of disclaimer:** despite making two requests, it's not such heave, because responses for listing searches and getting a search are paginated, 5 items by default.
+- Presenters are useful here to combine models and change fields names to conform the JSON standard naming.
+
 ### Get all searches performed so far (not the results, paginated)
+
+In this use case, the workflow is:
+
+- GET /api/v1/searches?pageNumber={}&pageSize={} is reached
+- the use case will check paramaters for pagination
+- call the repository for paginated items
+- sending back a response using a collection presenter. The collection is just a simple presenter for the search, that is, its data, with no jokes list.
 
 ### Get (specific) Search results, paginated
 
- 
+In this use case, the workflow is:
+
+- GET /api/v1/searches/:id/pageNumber={}&pageSize={} is reached
+- the use case will check paramaters for pagination. That pagination affects the list of returned jokes. There is info (in `meta` about total items, total pages, current page and items per page, useful for paginating data in the client side)
+- call the repository for selected search, returning error in case of not found search, and paginated jokes
+- sending back a response using a collection presenter for jokes. The main collection is detailed presenter for the search, that is, its data, and selected jokes list according to pagination requested by client.
 
 # Building the solution
 
@@ -179,3 +271,15 @@ So the (initial) workflow is:
 - once done, use case will return all categories list (I'm applying some kind of JSON API specification, I prefered to keep it flexible to my needs, and I am not using any gem to help me with that like [jsonapi-serializer](https://github.com/jsonapi-serializer/jsonapi-serializer), frontend will be able to work with it)
 
 Tests are mocked as it should be, we can't test with real API services because we need predictable tests and we can't leave chance to connection errors, API server slow responses and that kind of nuances. Better have predictable and specific tests.
+
+---
+
+The others endpoints follow very closely the logic I explained when I introduced the architecture considerations, however I will explain here some modifications to that design.
+
+When creating a search, I am using another use case at the end, specifically, getting a search. So we have use cases that make one main thing only and they can be used in a somehow chained mode. So, when creating a search, we call the use case for returning a specific search, the one just created. 
+
+Another modification is that when creating a search, at the end, if there is a valid email, then we send an email with the joke list (and content). That's why I installed `sidekiq`. I created an account in [Sendgrid](https://sendgrid.com/) with my own API key, but you'll have to provide yours in the docker-compose.yml file and build as shown before. The problem with this is that there is only one chance for sending an email with jokes, unless we create same search again. However, I created another endpoint:
+
+- GET /api/v1/searches/:id/resend_email
+
+that will create an email containing the jokes for the specified search. Same rules apply here, we check for existing search, valid email, and boom, we create a background job for sending the email.

@@ -60,7 +60,6 @@
           </div>
         </div>
       </div>
-
       <div class="container ">
         <button class="button is-fullwidth is-link" :disabled="disabled === true" @click="searchByRandom">Random Search, I'm feeling lucky</button>
       </div>
@@ -155,10 +154,12 @@ export default {
             const id = response.data.data[0].id
             this.resetFields()
             this.openSearch({id: id})
+            alert("Search created successfully")
           })
           .catch(error => {
             this.api_errors = error
-            alert(JSON.stringify(this.api_errors))
+            alert("There was some errors when creating the search, sorry. Check the console for more info.")
+            console.log(JSON.stringify(error))
           })
     },
     resetFields() {

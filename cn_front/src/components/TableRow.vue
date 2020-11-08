@@ -22,7 +22,10 @@ export default {
     resendEmail(row) {
       ApiClient.resendEmail(row.id)
         .then(response => console.log(response.data))
-        .catch(error => this.api_errors = error)
+        .catch(error => {
+          alert("There was some errors when requesting resending the email, sorry. Check the console for more info.")
+          console.log(JSON.stringify(error))
+        })
     }
   },
   created() {

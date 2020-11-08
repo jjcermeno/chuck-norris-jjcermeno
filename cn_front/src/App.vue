@@ -37,9 +37,7 @@ export default {
   },
   methods: {
     openSearch(row) {
-      console.log("open-search in App has been published with row", JSON.stringify(row))
       this.search_trigger = row.id
-      console.log("search_trigger", this.search_trigger)
     }
   }
 }
