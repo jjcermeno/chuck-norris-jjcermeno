@@ -6,7 +6,7 @@
       </h4>
     </div>
   </div>
-  <Table :openSearchResults="openSearch"></Table>
+  <search-table :openSearchResults="openSearch"></search-table>
 </template>
 
 <script>
@@ -16,7 +16,7 @@ import Table from "@/components/Table.vue";
 export default {
   name: 'SearchList',
   components: {
-    Table
+    'search-table': Table
   },
   props: [
     'openSearchResults'

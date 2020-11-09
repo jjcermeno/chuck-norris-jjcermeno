@@ -5,6 +5,10 @@
         Search for Chuck Norris' jokes!
       </h4>
     </div>
+    <div v-bind:class="{ 'notification': true, 'is-success': isSuccessful, 'is-danger': isDanger, 'is-hidden': isHidden , 'is-light': false}">
+      <button class="delete" @click="close_notification"></button>
+      {{ notification_message }}
+    </div>
     <div class="box">
 
       <div class="field">
@@ -89,6 +93,10 @@ export default {
       word: null,
       category: null,
       disabled: false,
+      isSuccessful: false,
+      isDanger: true,
+      isHidden: true,
+      notification_message: '',
       re: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
     }
   },
@@ -154,11 +162,13 @@ export default {
             const id = response.data.data[0].id
             this.resetFields()
             this.openSearch({id: id})
-            alert("Search created successfully")
+            // alert("Search created successfully")
+            this.open_success_notification("Search created successfully")
           })
           .catch(error => {
             this.api_errors = error
-            alert("There was some errors when creating the search, sorry. Check the console for more info.")
+            //alert("There was some errors when creating the search, sorry. Check the console for more info.")
+            this.open_error_notification("There was some errors when creating the search, sorry. Check the console for more info.")
             console.log(JSON.stringify(error))
           })
     },
@@ -167,6 +177,21 @@ export default {
     },
     openSearch(row) {
       this.openSearchResults(row)
+    },
+    open_success_notification(message) {
+      this.isSuccessful = true
+      this.isDanger = false
+      this.isHidden = false
+      this.notification_message = message
+    },
+    open_error_notification(message) {
+      this.isSuccessful = false
+      this.isDanger = true
+      this.isHidden = false
+      this.notification_message = message
+    },
+    close_notification() {
+      this.isHidden = true
     }
   },
   created() {
