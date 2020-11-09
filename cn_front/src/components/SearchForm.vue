@@ -5,7 +5,8 @@
         Search for Chuck Norris' jokes!
       </h4>
     </div>
-    <div v-bind:class="{ 'notification': true, 'is-success': isSuccessful, 'is-danger': isDanger, 'is-hidden': isHidden , 'is-light': false}">
+    <div
+        v-bind:class="{ 'notification': true, 'is-success': isSuccessful, 'is-danger': isDanger, 'is-hidden': isHidden , 'is-light': false}">
       <button class="delete" @click="close_notification"></button>
       {{ notification_message }}
     </div>
@@ -52,7 +53,7 @@
               <div class="control is-expanded">
                 <div class="select is-fullwidth" v-if="categories">
                   <select name="category" v-model="category">
-                    <option v-for= "category in categories" :key="category">{{ category.categoryName }}</option>
+                    <option v-for="category in categories" :key="category">{{ category.categoryName }}</option>
                   </select>
                 </div>
               </div>
@@ -65,7 +66,9 @@
         </div>
       </div>
       <div class="container ">
-        <button class="button is-fullwidth is-link" :disabled="disabled === true" @click="searchByRandom">Random Search, I'm feeling lucky</button>
+        <button class="button is-fullwidth is-link" :disabled="disabled === true" @click="searchByRandom">Random Search,
+          I'm feeling lucky
+        </button>
       </div>
     </div>
   </div>
@@ -107,11 +110,12 @@ export default {
         searchValue: this.search_value,
         email: this.email
       }
-      if (form.searchType != "random" ){
-       if (form.searchValue == null || form.searchValue == ''){
-        alert("I'm sorry but, when using 'word' or 'category' search you have to enter/choose something")
-        return
-       }
+      if (form.searchType != "random") {
+        if (form.searchValue == null || form.searchValue == '') {
+          // alert("I'm sorry but, when using 'word' or 'category' search you have to enter/choose something")
+          this.open_error_notification("I am sorry but, when using 'word' or 'category' search you have to enter/choose something")
+          return
+        }
       }
       this.createSearch(form)
     },
