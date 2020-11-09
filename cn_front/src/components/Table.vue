@@ -1,7 +1,11 @@
 <template>
   <h6 class="title is-6 has-text-centered">Searches in total: {{ total_searches }}</h6>
+  <div v-bind:class="{ 'notification': true, 'is-success': isSuccessful, 'is-danger': isDanger, 'is-hidden': isHidden , 'is-light': false}">
+    <button class="delete" @click="close_notification"></button>
+    {{ notification_message }}
+  </div>
   <div class="container mt-3 mb-3">
-    <table class="table is-hoverable is-success is-fullwidth">
+    <table class="table is-hoverable is-narrowed is-success is-fullwidth">
       <thead>
       <tr>
         <th>ID</th>
@@ -24,14 +28,14 @@
       </tfoot>
       <tbody v-if="rows">
         <tr v-for="row in rows" :key="row">
-          <TableRow :row="row" :openSearchResults="openSearch"></TableRow>
+          <table_row :row="row" :openSearchResults="openSearch"></table_row>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="container mt-3 mb-3">
     <h6 class="title is-6 has-text-centered">Searches in total: {{ total_searches }}</h6>
-<!--    <button class="button is-small is-warning" @click="getData">Refresh table</button>-->
+    <!--    <button class="button is-small is-warning" @click="getData">Refresh table</button>-->
   </div>
   <div class="container mt-3 mb-3">
     <Paginator :pagination_data="pagination_data"></Paginator>
@@ -47,10 +51,10 @@ export default {
   name: 'Table',
   components: {
     Paginator,
-    TableRow
+    'table_row': TableRow
   },
   props: [
-      'openSearchResults'
+    'openSearchResults'
   ],
   data() {
     return {
@@ -59,7 +63,11 @@ export default {
       page: 1,
       per_page: 50,
       total_searches: 0,
-      api_errors: ''
+      api_errors: '',
+      isSuccessful: false,
+      isDanger: true,
+      isHidden: true,
+      notification_message: ''
     }
   },
   methods: {
@@ -82,7 +90,8 @@ export default {
           .then(response => this.setData(response.data))
           .catch(error => {
             this.api_errors = error
-            alert("There was some errors when trying to get search data, sorry. Check the console for more info.")
+            // alert("There was some errors when trying to get search data, sorry. Check the console for more info.")
+            this.open_error_notification("There was some errors when creating the search, sorry. Check the console for more info.")
             console.log(JSON.stringify(error))
           })
     },
@@ -95,6 +104,21 @@ export default {
     },
     openSearch(row) {
       this.openSearchResults(row)
+    },
+    open_success_notification(message) {
+      this.isSuccessful = true
+      this.isDanger = false
+      this.isHidden = false
+      this.notification_message = message
+    },
+    open_error_notification(message) {
+      this.isSuccessful = false
+      this.isDanger = true
+      this.isHidden = false
+      this.notification_message = message
+    },
+    close_notification() {
+      this.isHidden = true
     }
   },
   created() {

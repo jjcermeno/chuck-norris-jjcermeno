@@ -18,11 +18,20 @@ export default {
   props: [
     'row',
     'openSearchResults'],
+  data() {
+    return {
+      isSuccessful: false,
+      isDanger: true,
+      isHidden: true,
+      notification_message: ''
+    }
+  },
   methods: {
     resendEmail(row) {
       ApiClient.resendEmail(row.id)
-        .then(response => console.log(response.data))
-        .catch(error => {
+        .then(response => {
+          console.log(response.data)
+        }).catch(error => {
           alert("There was some errors when requesting resending the email, sorry. Check the console for more info.")
           console.log(JSON.stringify(error))
         })
