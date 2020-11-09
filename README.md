@@ -39,14 +39,16 @@ The first procedure is to install and deploy so:
 
     start the docker service (in Linux) if it's not started
 
-    ```bash
-    make docker-start
-    ```
+```bash
+make docker-start
+```
 
 - if you have a valid SendGrid API Key, you may want to expose it before building the solution or it won't send any email
 
 ```bash
 export SENDGRID_API_KEY=your_api_key
+# or 
+export SENDGRID_API_KEY=''
 ```
 
 - then just build all the system
@@ -56,11 +58,19 @@ make docker-build
 ```
 
 - it will install all needed software, including Ruby, Ruby on Rails, postgres, sidekiq, Vuejs and additional libraries to make them work
+- Now, we have to create and migrate databases in Rails so
+
+```bash
+make db-create
+# and after that
+make db-migrate
+```
+
 - To launch the tests do
 
 ```bash
 make tests
-#or
+# or
 make rspec
 ```
 
@@ -69,7 +79,7 @@ make rspec
 
 ```bash
 make docker-up
-#or 
+# or 
 make docker-upd
 ```
 
