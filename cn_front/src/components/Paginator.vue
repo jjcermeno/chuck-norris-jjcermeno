@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     go_to_previous() {
-      if (this.pagination_data.page <= 1) {
+      if (this.pagination_data.page_number <= 1) {
         console.log("Page in paginator: ", this.pagination_data.page_number)
       } else {
         this.pagination_data.page_number -= 1
@@ -43,7 +43,7 @@ export default {
       this.set_buttons_status()
     },
     go_to_next() {
-      if (this.pagination_data.page < this.pagination_data.total_pages) {
+      if (this.pagination_data.page_number < this.pagination_data.total_pages) {
         this.pagination_data.page_number += 1
         console.log("Page in paginator: ", this.pagination_data.page_number)
       } else {
@@ -54,7 +54,7 @@ export default {
     set_buttons_status() {
       console.log("Paginator (table)", JSON.stringify(this.pagination_data));
       var page = this.pagination_data.page_number
-      var total_pages = this.pagination_data.page_number
+      var total_pages = this.pagination_data.total_pages
       console.log("Paginator (table) page: ", page);
       this.isPreviousHidden = !(page > 1)
       this.isNextHidden = !(page < total_pages)
