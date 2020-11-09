@@ -38,7 +38,7 @@
     <!--    <button class="button is-small is-warning" @click="getData">Refresh table</button>-->
   </div>
   <div class="container mt-3 mb-3">
-    <Paginator :pagination_data="pagination_data"></Paginator>
+    <search-paginator :pagination_data="pagination_data" :page="page_trigger"></search-paginator>
   </div>
 </template>
 
@@ -50,18 +50,19 @@ import ApiClient from "@/services/ApiClient";
 export default {
   name: 'Table',
   components: {
-    Paginator,
-    'table_row': TableRow
+    'table_row': TableRow,
+    'search-paginator': Paginator
   },
   props: [
-    'openSearchResults'
+    'openSearchResults',
+    'page_trigger',
   ],
   data() {
     return {
       rows: [],
-      total_pages: 1,
+      total_pages: 0,
       page: 1,
-      per_page: 50,
+      per_page: 5,
       total_searches: 0,
       api_errors: '',
       isSuccessful: false,
@@ -71,22 +72,21 @@ export default {
     }
   },
   methods: {
-    getData() {
-      const form = {
-        page_size: this.per_page,
-        page_number: this.page
-      }
-      this.getSearches(form)
-    },
     setData(data) {
       this.rows = data.data
       this.total_searches = data.meta.totalSearches
       this.total_pages = data.meta.totalPages
       this.page = data.meta.pageNumber
       this.per_page = data.meta.pageSize
+      this.pagination_data()
     },
-    getSearches(form) {
-      ApiClient.getSearches(form.page_number, form.page_size)
+    getSearches() {
+      var page = this.page
+      if (this.page == 0){
+        page = 1
+      }
+      const per_page = this.per_page
+      ApiClient.getSearches(page, per_page)
           .then(response => this.setData(response.data))
           .catch(error => {
             this.api_errors = error
@@ -122,7 +122,20 @@ export default {
     }
   },
   created() {
-    this.getData();
+    this.getSearches()
+  },
+  mounted() {
+    this.getSearches()
+  },
+  watch: {
+    page_trigger: function (newVal) {
+      console.log("Change page: ", newVal)
+      if (newVal) {
+        this.page = newVal
+        this.getSearches()
+        this.pagination_data()
+      }
+    }
   }
 }
 </script>

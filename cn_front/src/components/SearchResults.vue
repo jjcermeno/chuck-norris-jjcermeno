@@ -10,21 +10,21 @@
     <Jokes :jokes="jokes"></Jokes>
   </div>
   <div class="container mt-3 mb-3">
-    <Paginator :pagination_data="set_pagination_data"></Paginator>
+<!--    <jokes-paginator :pagination_data="set_pagination_data"></jokes-paginator>-->
   </div>
 
 </template>
 
 <script>
 import Jokes from "@/components/Jokes.vue";
-import Paginator from "@/components/Paginator.vue";
+// import Paginator from "@/components/Paginator.vue";
 import ApiClient from "@/services/ApiClient";
 
 export default {
   name: 'SearchResults',
   components: {
     Jokes,
-    Paginator
+    // 'jokes-paginator': Paginator
   },
   props: ['search_id'],
   data() {
