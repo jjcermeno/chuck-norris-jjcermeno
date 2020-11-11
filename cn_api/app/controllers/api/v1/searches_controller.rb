@@ -4,10 +4,8 @@ module Api
 
       # GET /api/v1/searches
       def index
-        data_result = Manager.list_searches(params)
-        status = data_result.errors.present? ? :unprocessable_entity : :ok
-        json = Oj.dump(data_result.as_json)
-        render json: json, status: status
+        response = respond_to_request(Manager.list_searches(params))
+        render json: response[:json], status: response[:status]
       end
 
       # GET /api/v1/searches/:id

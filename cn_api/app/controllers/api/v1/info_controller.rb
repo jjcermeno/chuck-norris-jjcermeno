@@ -4,10 +4,8 @@ module Api
 
       # GET /info
       def index
-        data_result = Info.get_info
-        status = data_result.errors.present? ? :unprocessable_entity : :ok
-        json = Oj.dump(data_result.as_json)
-        render json: json, status: status
+        response = respond_to_request(Info.get_info)
+        render json: response[:json], status: response[:status]
       end
 
     end
