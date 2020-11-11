@@ -4,18 +4,14 @@ module Api
 
       # GET /api/v1/searches
       def index
-        data_result = Manager.list_searches(params)
-        status = data_result.errors.present? ? :unprocessable_entity : :ok
-        json = Oj.dump(data_result.as_json)
-        render json: json, status: status
+        response = respond_to_request(Manager.list_searches(params))
+        render json: response[:json], status: response[:status]
       end
 
       # GET /api/v1/searches/:id
       def show
-        data_result = Manager.get_search(params)
-        status = data_result.data.present? ? :ok : :not_found
-        json = Oj.dump(data_result.as_json)
-        render json: json, status: status
+        response = respond_to_request(Manager.get_search(params), [:ok, :not_found], "data")
+        render json: response[:json], status: response[:status]
       end
 
       # GET /api/v1/searches/:id/resend_email
@@ -28,10 +24,8 @@ module Api
 
       # POST /api/v1/searches
       def create
-        data_result = Manager.create_search(params)
-        status = data_result.data.present? ? :created : :unprocessable_entity
-        json = Oj.dump(data_result.as_json)
-        render json: json, status: status
+        response = respond_to_request(Manager.create_search(params), [:created, :unprocessable_entity], "data")
+        render json: response[:json], status: response[:status]
       end
     end
   end
