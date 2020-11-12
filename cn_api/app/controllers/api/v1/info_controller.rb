@@ -4,7 +4,7 @@ module Api
 
       # GET /info
       def index
-        response = respond_to_request(Info.get_info)
+        response = respond_to_request(Manager.get_info)
         render json: response[:json], status: response[:status]
       end
 

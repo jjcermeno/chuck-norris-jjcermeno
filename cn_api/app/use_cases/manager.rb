@@ -6,4 +6,5 @@ module Manager
   has_use_case :get_search, Searches::GetSearch
   has_use_case :create_search, Searches::CreateSearch
   has_use_case :resend_email, Searches::ResendEmail
+  has_use_case :get_info, Info::GetInfo
 end
