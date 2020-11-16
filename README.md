@@ -34,7 +34,7 @@ The `Makefile` it's very useful as I introduced there complex or very frequently
 
 The first procedure is to install and deploy so:
 
-- open a terminal and go to folder happets-jjcermeno
+- open a terminal and go to folder `chuck-norris-jjcermeno`
 - using the terminal type:
 
     start the docker service (in Linux) if it's not started
@@ -48,7 +48,7 @@ make docker-start
 ```bash
 export SENDGRID_API_KEY=your_api_key
 # or 
-export SENDGRID_API_KEY=''
+export SENDGRID_API_KEY='any_string_here'
 ```
 
 - then just build all the system
@@ -228,7 +228,7 @@ As I said for back end I will use Ruby on Rails 6 API mode and PostgreSQL as dat
 
 ## Setting up environments with Docker & Docker Compose
 
-I created a folder (and repo) called happets-jjcermeno that contains a `docker-compose.yml` and a `Makefile` that organize the whole she-bang.
+I created a folder (and repo) called `chuck-norris-jjcermeno` that contains a `docker-compose.yml` and a `Makefile` that organize the whole she-bang.
 
 ## Docker, Docker Compose
 
