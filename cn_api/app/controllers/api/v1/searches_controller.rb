@@ -10,21 +10,20 @@ module Api
 
       # GET /api/v1/searches/:id
       def show
-        response = respond_to_request(Manager.get_search(params), [:ok, :not_found], "data")
+        response = respond_to_request(Manager.get_search(params), [:ok, :not_found], 'data')
         render json: response[:json], status: response[:status]
       end
 
       # GET /api/v1/searches/:id/resend_email
       def resend_email
         data_result = Manager.resend_email(params)
-        status = data_result.errors.present? ? :not_found : :ok
-        json = Oj.dump(data_result.as_json)
-        render json: json, status: status
+        response = respond_to_request(Manager.resend_email(params), [:not_found, :ok], 'error')
+        render json: response[:json], status: response[:status]
       end
 
       # POST /api/v1/searches
       def create
-        response = respond_to_request(Manager.create_search(params), [:created, :unprocessable_entity], "data")
+        response = respond_to_request(Manager.create_search(params), [:created, :unprocessable_entity], 'data')
         render json: response[:json], status: response[:status]
       end
     end
